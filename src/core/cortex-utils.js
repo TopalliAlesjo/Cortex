@@ -32,6 +32,7 @@ export function errorInfo(e) {
   // Never forward Playwright messages: call logs can contain fill values and URLs.
   const message=String(e?.message || '');
   const safeMessage=e?.cortexMessage || (/Executable doesn't exist/i.test(message) ? 'Chromium non installato per questa versione di Playwright. Dalla cartella Cortex eseguire npm run browser:install, poi riavviare il server MCP.'
+    : /Chromium sandboxing failed|No usable sandbox|Failed to move to new namespace|SUID sandbox helper|Running as root without --no-sandbox/i.test(message) ? 'Sandbox Chromium non disponibile. Su Linux usare un utente non root e configurare il sandbox helper o il profilo AppArmor; vedere docs/security.md. Cortex mantiene la sandbox abilitata.'
     : e?.name==='TimeoutError' ? 'Timeout dello step; verificare stato e target con cortex_debug.'
     : /strict mode violation/i.test(message) ? 'Target ambiguo: usare withinRow o un selettore univoco.'
     : /executable|browserType.launch|browser.*closed/i.test(message) ? 'Browser non disponibile; verificare eseguibile e sessione.'

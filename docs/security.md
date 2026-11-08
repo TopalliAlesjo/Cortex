@@ -5,6 +5,14 @@ Nessun trasporto MCP HTTP remoto o attach CDP esterno. JavaScript arbitrario bro
 
 Il browser usa la sandbox Chromium predefinita abilitata: nessun --no-sandbox. Su Linux root/container predisporre un utente e un ambiente sandbox compatibili; non si applica un fallback permissivo.
 
+Su Ubuntu 24.04 e successivi, AppArmor può impedire la creazione dei namespace utente ai browser scaricati da Playwright. L'amministratore può predisporre un profilo AppArmor per gli eseguibili Chromium oppure indicare un sandbox helper di sistema già installato e correttamente configurato. Per esempio, con Google Chrome installato:
+
+```sh
+export CHROME_DEVEL_SANDBOX=/opt/google/chrome/chrome-sandbox
+```
+
+Il helper deve essere di proprietà root e avere il bit setuid. Non impostare setuid su binari arbitrari. La CI Ubuntu verifica il helper preinstallato e lo passa a Chromium, mantenendo la sandbox abilitata. Per diagnosticare l'avvio da un checkout usare `node test/browser-startup.mjs`; questo comando non avvia un server MCP. Riferimento: [documentazione Chromium sulla sandbox e AppArmor](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md).
+
 Sessioni isolate: massimo 4, massimo 3 pagine per contesto. TTL 10 minuti, cleanup alla chiamata successiva. Cookie/localStorage/ref/diagnostica separati; processo browser condiviso, non isolamento OS.
 La sessione senza sessionId rimane condivisa. Usare newSession:true per attività indipendenti.
 

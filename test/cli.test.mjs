@@ -25,3 +25,16 @@ test('first launch: missing Chromium explains installation and hides local paths
   assert.match(info.message,/npm run browser:install/);
   assert.doesNotMatch(info.message,/private-user|chrome\.exe/);
 });
+
+test('browser launch: sandbox failures give actionable diagnostics without browser logs',()=>{
+  for(const message of [
+    'browserType.launch: Chromium sandboxing failed! private-path token=fixture-secret',
+    'No usable sandbox! private-path token=fixture-secret',
+    'Running as root without --no-sandbox is not supported. private-path token=fixture-secret'
+  ]) {
+    const info=errorInfo(new Error(message));
+    assert.match(info.message,/Sandbox Chromium non disponibile/);
+    assert.match(info.message,/docs\/security\.md/);
+    assert.doesNotMatch(info.message,/private-path|fixture-secret|--no-sandbox/);
+  }
+});

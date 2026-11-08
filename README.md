@@ -99,7 +99,7 @@ npm test
 
 Il gate esegue unit test, integrazione Chromium/stdio, lifecycle, profili estesi e installazione del tarball in un consumer temporaneo. Usa fixture locali; richiede Chromium installato e accesso al registry npm per il consumer.
 
-Ultima verifica locale: Windows x64 con Node 24.22.1 e npm 11.20.0, 37 test unitari, 19 scenari MCP estesi e gate completo superati. La matrice GitHub Actions include Linux, Windows e macOS; questi risultati locali non certificano gli altri sistemi.
+Ultima verifica locale: Windows x64 con Node 24.22.1 e npm 11.20.0, 38 test unitari, 19 scenari MCP estesi e gate completo superati. La matrice GitHub Actions include Linux, Windows e macOS; questi risultati locali non certificano gli altri sistemi.
 
 | Problema | Controllo |
 |---|---|

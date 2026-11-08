@@ -6,7 +6,9 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url));
-const temp=await fs.mkdtemp(path.join(os.tmpdir(),'cortex-independent-'));
+// Node resolves ESM imports to real paths. Permission grants must use the same
+// paths, including macOS /var -> /private/var and Windows junctions.
+const temp=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'cortex-independent-')));
 const npmCli=process.env.npm_execpath;
 if(!npmCli)throw Error('Run through npm run test:verify or npm run test:standalone.');
 async function command(args,cwd) {
@@ -48,14 +50,18 @@ try {
   const {Client}=await import(pathToFileURL(path.join(destination,'node_modules','@modelcontextprotocol/sdk/dist/esm/client/index.js')));
   const {StdioClientTransport}=await import(pathToFileURL(path.join(destination,'node_modules','@modelcontextprotocol/sdk/dist/esm/client/stdio.js')));
   const env=Object.fromEntries(Object.entries(process.env).filter(([key,value])=>typeof value==='string'&&!/SOPHIA|CORTEX|BROWSER_|ALLOWED_|NODE_PATH/.test(key)));
-  const browserCache=process.env.PLAYWRIGHT_BROWSERS_PATH || (process.platform==='win32'?path.join(process.env.LOCALAPPDATA||path.join(os.homedir(),'AppData','Local'),'ms-playwright'):process.platform==='darwin'?path.join(os.homedir(),'Library','Caches','ms-playwright'):path.join(process.env.XDG_CACHE_HOME||path.join(os.homedir(),'.cache'),'ms-playwright'));
+  const browserCache=await fs.realpath(process.env.PLAYWRIGHT_BROWSERS_PATH || (process.platform==='win32'?path.join(process.env.LOCALAPPDATA||path.join(os.homedir(),'AppData','Local'),'ms-playwright'):process.platform==='darwin'?path.join(os.homedir(),'Library','Caches','ms-playwright'):path.join(process.env.XDG_CACHE_HOME||path.join(os.homedir(),'.cache'),'ms-playwright')));
   const permissionArgs=['--permission','--allow-fs-read='+temp,'--allow-fs-read='+browserCache,'--allow-fs-write='+temp,'--allow-child-process'];
   // Prove source is inaccessible to the Node process, without changing either checkout.
   const probe=await new Promise((resolve,reject)=>{const child=spawn(process.execPath,[...permissionArgs,'-e',"try { require('node:fs').readFileSync(process.argv[1]); process.exit(2); } catch(e) { process.exit(e.code==='ERR_ACCESS_DENIED'?0:3); }",path.join(root,'package.json')],{cwd:temp,stdio:'ignore',windowsHide:true});child.once('error',reject);child.once('exit',resolve);});
   assert.equal(probe,0,'source checkout must be inaccessible');
   const transport=new StdioClientTransport({command:process.execPath,args:[...permissionArgs,path.join(packageRoot,'bin','cortex.mjs')],cwd:temp,env:{...env,CORTEX_ALLOWED_ORIGINS:origin,CORTEX_ARTIFACTS:path.join(temp,'artifacts'),PLAYWRIGHT_BROWSERS_PATH:browserCache,TEMP:temp,TMP:temp,TMPDIR:temp,NODE_PATH:''},stderr:'pipe'});
   const client=new Client({name:'independent-consumer',version:'1.0.0'});
-  await client.connect(transport);app={client,transport};
+  app={client,transport};
+  let startupStderr='';
+  transport.stderr?.on('data',chunk=>{startupStderr=(startupStderr+chunk.toString()).slice(-8192);});
+  try {await client.connect(transport);}
+  catch(error) {throw new Error('Packed consumer initialization failed. '+startupStderr,{cause:error});}
   assert.equal((await client.listTools()).tools.length,4);
   const call=async(name,args)=>{const r=await client.callTool({name,arguments:args});assert.equal(r.isError,undefined,JSON.stringify(r));return r.structuredContent;};
   const open=await call('cortex_open',{url:origin,newSession:true});
