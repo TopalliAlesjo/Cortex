@@ -1,0 +1,43 @@
+# Dependencies and generated files
+node_modules/
+/artifacts/
+/profiles/
+.cortex/
+coverage/
+test-results/
+playwright-report/
+*.tgz
+*.log
+*.tsbuildinfo
+
+# Local configuration, credentials and browser state
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+.aws/
+*.pem
+*.key
+storage-state*.json
+storageState*.json
+cookies*.json
+
+# Personal editor and agent settings
+.vscode/
+.idea/
+.agents/
+.codex/
+AGENTS.md
+.DS_Store
+Thumbs.db
+
+# Internal extraction plans and historical machine-specific reports.
+# Keep locally; public setup and verification are documented separately.
+/docs/analisi-estrazione-cortex.md
+/docs/analisi-evoluzione-cortex.md
+/docs/implementation-report.md
+/docs/evolution-results.md
+/docs/review-fixes.md
+/docs/positioning.md
+/docs/release-review.md

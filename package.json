@@ -1,0 +1,48 @@
+{
+  "name": "cortex-browser-mcp",
+  "version": "0.2.0-dev.1",
+  "private": true,
+  "description": "Browser automation over MCP with targeted reads and deterministic action batches, powered by Playwright",
+  "type": "module",
+  "license": "SEE LICENSE IN LICENSE",
+  "bin": {
+    "cortex": "./bin/cortex.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./mcp": "./src/mcp/server.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/configuration.md",
+    "docs/embedding.md",
+    "docs/security.md",
+    "docs/compatibility.md",
+    "docs/evolution.md",
+    "docs/licensing.md",
+    "examples"
+  ],
+  "scripts": {
+    "start": "node bin/cortex.mjs",
+    "test": "npm run test:verify",
+    "test:unit": "node --test test/*.test.mjs",
+    "test:integration": "node test/integration.mjs",
+    "test:standalone": "node test/standalone.mjs",
+    "test:verify": "node test/verify.mjs",
+    "benchmark:pilot": "node test/benchmark.mjs",
+    "browser:install": "playwright install chromium"
+  },
+  "engines": {
+    "node": ">=24.22.1 <25",
+    "npm": ">=11.19.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "dotenv": "17.3.1",
+    "playwright": "1.58.2"
+  }
+}

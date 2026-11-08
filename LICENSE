@@ -1,0 +1,77 @@
+Cortex Source-Available Non-Resale License 1.0
+
+Copyright (c) 2026 Cortex authors. All rights reserved except as granted below.
+
+1. Definitions
+
+"Software" means the Cortex source code, documentation, and other original
+materials distributed with this license, including copies, modifications,
+derivative works, and substantial portions of those materials. "Licensor"
+means each copyright holder granting rights in the Software under this license.
+"You" means the individual or legal entity exercising those rights.
+
+2. Permission
+
+Subject to these terms, the Licensor grants You a worldwide, non-exclusive,
+royalty-free copyright license to use, study, reproduce, and modify the Software,
+and to distribute it without charge. Personal use and internal commercial use
+are permitted. Recipients receive their permissions directly under this license.
+
+3. No resale or paid provision
+
+Without a separate written agreement from the relevant Licensor, You may not:
+
+(a) sell, rent, lease, or license the Software to third parties for a fee or
+    other consideration;
+(b) include the Software in a paid product, paid distribution, or paid bundle,
+    including when the Software is described as a free component of that sale;
+(c) offer access to the Software, or its browser automation capabilities, as a
+    paid hosted service, subscription, API, or managed MCP service; or
+(d) impose an equivalent charge indirectly as a condition of obtaining or
+    using the Software.
+
+These restrictions also apply to modified versions and substantial portions of
+the Software. Renaming or repackaging the Software does not remove them.
+
+Using the Software internally to perform work for clients, charging for work
+products that do not contain the Software, and charging for optional consulting,
+installation, training, or support are permitted, provided the charge does not
+buy a copy, license, or hosted access to the Software and is not required to
+obtain or use the Software. Voluntary donations that are not a condition of
+access or use are permitted.
+
+4. Notices and distribution
+
+You must preserve this license and all applicable copyright and attribution
+notices in every distributed copy or substantial portion. You must identify
+material modifications and must not imply endorsement by the original authors.
+You may not relicense the Software under terms that remove these restrictions
+or grant rights in the original Software that You do not have. This license
+grants no trademark rights.
+
+5. Third-party materials and prior grants
+
+Third-party materials are governed by their own licenses. This license does not
+replace those licenses or restrict rights independently granted by third-party
+copyright holders. It does not revoke rights already validly granted in a copy
+under another license. See THIRD_PARTY_NOTICES.md.
+
+6. Termination
+
+Your permissions terminate automatically if You violate these terms. Following
+termination You must stop exercising the rights granted by this license unless
+the relevant Licensor reinstates them in writing. All rights not expressly
+granted are reserved.
+
+7. Disclaimer and limitation of liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED
+"AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT, OR OTHERWISE, ARISING
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE OR OTHER DEALINGS.
+NOTHING IN THIS LICENSE EXCLUDES LIABILITY THAT APPLICABLE LAW DOES NOT ALLOW
+TO BE EXCLUDED.
+
+This is a custom source-available license, not an OSI-approved open-source license.

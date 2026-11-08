@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cortex": {
+      "command": "node",
+      "args": [
+        "C:/cortex/bin/cortex.mjs"
+      ],
+      "env": {
+        "CORTEX_ALLOWED_ORIGINS": "http://127.0.0.1:8080"
+      }
+    }
+  }
+}
