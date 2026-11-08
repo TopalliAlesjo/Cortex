@@ -23,12 +23,21 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          sandbox=/opt/google/chrome/chrome-sandbox
-          if [[ ! -u "$sandbox" || "$(stat -c %u "$sandbox")" != 0 ]]; then
-            echo "The runner must provide a root-owned setuid Chrome sandbox helper." >&2
+          browser_cache="${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}"
+          profile="$RUNNER_TEMP/cortex-playwright.apparmor"
+          printf 'abi <abi/4.0>,\ninclude <tunables/global>\n' > "$profile"
+          count=0
+          while IFS= read -r -d '' executable; do
+            count=$((count + 1))
+            printf '\nprofile cortex-playwright-ci-%s "%s" flags=(unconfined) {\n  userns,\n}\n' \
+              "$count" "$executable" >> "$profile"
+          done < <(find "$browser_cache" -type f -executable \( -name chrome -o -name chrome-headless-shell \) -print0)
+          if [[ "$count" == 0 ]]; then
+            echo "No Playwright Chromium executable found for the AppArmor profile." >&2
             exit 1
           fi
-          echo "CHROME_DEVEL_SANDBOX=$sandbox" >> "$GITHUB_ENV"
+          sudo install -m 0644 "$profile" /etc/apparmor.d/cortex-playwright-ci
+          sudo apparmor_parser --replace /etc/apparmor.d/cortex-playwright-ci
       - name: Check Chromium startup with sandbox
         run: node test/browser-startup.mjs
       - run: npm run test:verify

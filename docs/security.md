@@ -11,7 +11,7 @@ Su Ubuntu 24.04 e successivi, AppArmor può impedire la creazione dei namespace 
 export CHROME_DEVEL_SANDBOX=/opt/google/chrome/chrome-sandbox
 ```
 
-Il helper deve essere di proprietà root e avere il bit setuid. Non impostare setuid su binari arbitrari. La CI Ubuntu verifica il helper preinstallato e lo passa a Chromium, mantenendo la sandbox abilitata. Per diagnosticare l'avvio da un checkout usare `node test/browser-startup.mjs`; questo comando non avvia un server MCP. Riferimento: [documentazione Chromium sulla sandbox e AppArmor](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md).
+L'helper deve essere di proprietà root e avere il bit setuid. Non impostare setuid su binari arbitrari. La CI Ubuntu installa invece un profilo AppArmor con permesso `userns` per i soli percorsi esatti dei binari Chromium scaricati da Playwright, mantenendo la sandbox abilitata e le restrizioni generali del sistema. Per diagnosticare l'avvio da un checkout usare `node test/browser-startup.mjs`; questo comando non avvia un server MCP. Riferimento: [documentazione Chromium sulla sandbox e AppArmor](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md).
 
 Sessioni isolate: massimo 4, massimo 3 pagine per contesto. TTL 10 minuti, cleanup alla chiamata successiva. Cookie/localStorage/ref/diagnostica separati; processo browser condiviso, non isolamento OS.
 La sessione senza sessionId rimane condivisa. Usare newSession:true per attività indipendenti.
